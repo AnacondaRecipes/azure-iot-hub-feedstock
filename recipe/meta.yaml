@@ -10,6 +10,7 @@ source:
   sha256: ffc162c54a782a84215916c1fedf7e5d2432489db7fb2b581e2eddc800a3039e
   patches:
     # dos2unix needs by this reason: Hunk #1 FAILED at 77 different line endings.
+    # main problem with requested python version 3.3* -> 3.3.*
     - patches/0001-Update-version-3.3-and-make-dos2unix.patch
 
 build:
@@ -49,7 +50,8 @@ about:
   home: https://github.com/Azure/azure-iot-hub-python/
   summary: Microsoft Azure IoTHub Service Library
   license: MIT
-  #license_file: LICENSE
+  # Version 2.6.0 don`t have LICENSE file in the sources. But in all other versions LICENSE is avaliable.
+  license_file: LICENSE
   license_family: MIT
   dev_url: https://github.com/Azure/azure-iot-hub-python/
   doc_url: https://learn.microsoft.com/en-gb/python/api/azure-iot-hub/azure.iot.hub?view=azure-python
