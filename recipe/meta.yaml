@@ -12,6 +12,10 @@ source:
 build:
   number: 0
   script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  # uamqp is not avaliable on py>312
+  skip: True  # [py>312]
+  # uamqp is not avaliable on linux py>311
+  skip: True  # [linux and py>311]
 
 requirements:
   host:
