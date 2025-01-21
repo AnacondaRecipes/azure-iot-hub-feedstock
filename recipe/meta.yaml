@@ -1,5 +1,5 @@
 {% set name = "azure-iot-hub" %}
-{% set version = "2.6.1" %}
+{% set version = "2.6.0" %}
 
 package:
   name: {{ name|lower }}
@@ -7,7 +7,10 @@ package:
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/azure-iot-hub-{{ version }}.tar.gz
-  sha256: e952a7517448d826e3a95d37e9ba258d932e7aa45fde07ea4ded391c45fdf47c
+  sha256: ffc162c54a782a84215916c1fedf7e5d2432489db7fb2b581e2eddc800a3039e
+  patches:
+    # dos2unix needs by this reason: Hunk #1 FAILED at 77 different line endings.
+    - patches/0001-Update-version-3.3-and-make-dos2unix.patch
 
 build:
   number: 0
@@ -17,9 +20,12 @@ build:
   # uamqp is not avaliable on linux py>311
   skip: True  # [linux and py>311]
   # uamqp is not avaliable on s390x
-  skip: True  # [s390x]
+  skip: True  # [s390x]  
 
 requirements:
+  build: 
+    - patch  # [not win]
+    - m2-patch  # [win]
   host:
     - python
     - wheel
@@ -33,7 +39,7 @@ requirements:
 
 test:
   imports:
-    - azure
+    - azure.iot.hub
   commands:
     - pip check
   requires:
@@ -43,7 +49,7 @@ about:
   home: https://github.com/Azure/azure-iot-hub-python/
   summary: Microsoft Azure IoTHub Service Library
   license: MIT
-  license_file: LICENSE
+  #license_file: LICENSE
   license_family: MIT
   dev_url: https://github.com/Azure/azure-iot-hub-python/
   doc_url: https://learn.microsoft.com/en-gb/python/api/azure-iot-hub/azure.iot.hub?view=azure-python
