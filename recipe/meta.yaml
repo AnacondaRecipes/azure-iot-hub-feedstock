@@ -1,0 +1,59 @@
+{% set name = "azure-iot-hub" %}
+{% set version = "2.6.1" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/azure-iot-hub-{{ version }}.tar.gz
+  sha256: e952a7517448d826e3a95d37e9ba258d932e7aa45fde07ea4ded391c45fdf47c
+  patches:
+    - patches/0001-fix-manifest-and-init.patch
+
+build:
+  number: 0
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  # uamqp is not avaliable on py>312
+  skip: True  # [py>312]
+  # uamqp is not avaliable on linux py>311
+  skip: True  # [linux and py>311]
+  # uamqp is not avaliable on s390x
+  skip: True  # [s390x]
+
+requirements:
+  build: 
+    - patch  # [not win]
+    - m2-patch  # [win]
+  host:
+    - python
+    - wheel
+    - setuptools
+    - pip
+  run:
+    - python
+    - msrest >=0.6.21,<1.0.0
+    - uamqp >=1.2.14,<2.0.0
+    - azure-core >=1.10.0,<2.0.0
+
+test:
+  imports:
+    - azure.iot.hub
+  commands:
+    - pip check
+  requires:
+    - pip
+
+about:
+  home: https://github.com/Azure/azure-iot-hub-python/
+  summary: Microsoft Azure IoTHub Service Library
+  license: MIT
+  license_file: LICENSE
+  license_family: MIT
+  dev_url: https://github.com/Azure/azure-iot-hub-python/
+  doc_url: https://learn.microsoft.com/en-gb/python/api/azure-iot-hub/azure.iot.hub?view=azure-python
+  description: The Azure IoTHub Service SDK for Python provides functionality for communicating with the Azure IoT Hub.
+
+extra:
+  recipe-maintainers:
+    - snegireff
