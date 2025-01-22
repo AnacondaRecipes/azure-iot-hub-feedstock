@@ -1,5 +1,5 @@
 {% set name = "azure-iot-hub" %}
-{% set version = "2.6.0" %}
+{% set version = "2.6.1" %}
 
 package:
   name: {{ name|lower }}
@@ -7,11 +7,9 @@ package:
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/azure-iot-hub-{{ version }}.tar.gz
-  sha256: ffc162c54a782a84215916c1fedf7e5d2432489db7fb2b581e2eddc800a3039e
+  sha256: e952a7517448d826e3a95d37e9ba258d932e7aa45fde07ea4ded391c45fdf47c
   patches:
-    # dos2unix needs by this reason: Hunk #1 FAILED at 77 different line endings.
-    # main problem with requested python version 3.3* -> 3.3.*
-    - patches/0001-Update-version-3.3-and-make-dos2unix.patch
+    - patches/0001-fix-manifest-and-init.patch
 
 build:
   number: 0
@@ -21,7 +19,7 @@ build:
   # uamqp is not avaliable on linux py>311
   skip: True  # [linux and py>311]
   # uamqp is not avaliable on s390x
-  skip: True  # [s390x]  
+  skip: True  # [s390x]
 
 requirements:
   build: 
@@ -50,7 +48,6 @@ about:
   home: https://github.com/Azure/azure-iot-hub-python/
   summary: Microsoft Azure IoTHub Service Library
   license: MIT
-  # Version 2.6.0 don`t have LICENSE file in the sources. But in all other versions LICENSE is avaliable.
   license_file: LICENSE
   license_family: MIT
   dev_url: https://github.com/Azure/azure-iot-hub-python/
